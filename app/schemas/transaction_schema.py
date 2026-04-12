@@ -8,9 +8,12 @@ class TransactionBase(BaseModel):
     type: TransactionType
 
 class TransactionCreate(TransactionBase):
-    account_id: int
+    user_id: int
+    account_sequence_number: int
 
 class TransactionRead(TransactionBase):
     model_config = ConfigDict(from_attributes=True)
     id: int
+    user_id: int
+    account_sequence_number: int
     timestamp: datetime
