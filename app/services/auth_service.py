@@ -4,6 +4,7 @@ from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.exc import IntegrityError
 from pwdlib import PasswordHash
+from app.services.account_service import create_user_account
 from app.schemas.user_schema import UserCreate
 from app.models import User
 
@@ -21,6 +22,10 @@ async def register_user(user_data: UserCreate, db_session: AsyncSession) -> User
     db_session.add(new_user)
     
     try:
+        await db_session.flush() 
+        
+        await create_user_account(new_user.id, db_session)
+        
         await db_session.commit()
         await db_session.refresh(new_user)
         return new_user
