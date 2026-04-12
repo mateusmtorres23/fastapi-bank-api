@@ -27,7 +27,7 @@ async def test_route_login_success(async_client: AsyncClient):
     await async_client.post("/auth/register", json=reg_payload)
     
     login_data = {"username": "login_user", "password": "correct_password"}
-    response = await async_client.post("/auth/token", data=login_data)
+    response = await async_client.post("/auth/login", data=login_data)
     
     assert response.status_code == status.HTTP_200_OK
     data = response.json()
@@ -37,7 +37,7 @@ async def test_route_login_success(async_client: AsyncClient):
 @pytest.mark.asyncio
 async def test_route_login_invalid_credentials(async_client: AsyncClient):
     login_data = {"username": "non_existent", "password": "wrong_password"}
-    response = await async_client.post("/auth/token", data=login_data)
+    response = await async_client.post("/auth/login", data=login_data)
     
     assert response.status_code == status.HTTP_401_UNAUTHORIZED
     assert response.json()["detail"] == "Incorrect username or password"

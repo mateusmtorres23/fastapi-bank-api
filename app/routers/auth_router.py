@@ -12,7 +12,7 @@ router = APIRouter(prefix="/auth", tags=["auth"])
 async def register(user_data: UserCreate, db_session: AsyncSession = Depends(get_db)):
     return await register_user(user_data, db_session)
 
-@router.post("/token")
+@router.post("/login")
 async def login_for_access_token(
     credentials: OAuth2PasswordRequestForm = Depends(), 
     db_session: AsyncSession = Depends(get_db)
