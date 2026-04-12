@@ -11,7 +11,8 @@ class AccountCreate(AccountBase):
 
 class AccountRead(AccountBase):
     model_config = ConfigDict(from_attributes=True)
-    id: int
+    user_id: int  
+    sequence_number: int
     owner_username: str
     
 class AccountReadWithTransactions(AccountRead):
