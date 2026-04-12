@@ -4,17 +4,16 @@ from starlette.concurrency import run_in_threadpool
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.exc import IntegrityError
-from passlib.context import CryptContext
+from pwdlib import PasswordHash
 from app.schemas.user_schema import UserCreate
 from app.models import User
 
-pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
-
+password_hash = PasswordHash.recommended()
 async def get_password_hash(password: str):
-    return await run_in_threadpool(pwd_context.hash, password)
+    return await run_in_threadpool(password_hash.hash, password)
 
 async def verify_password(plain_password: str, hashed_password: str):
-    return await run_in_threadpool(pwd_context.verify, plain_password, hashed_password)
+    return await run_in_threadpool(password_hash.verify, plain_password, hashed_password)
 
 
 async def register_user(user_data: UserCreate, db_session: AsyncSession) -> User:
@@ -33,11 +32,11 @@ async def register_user(user_data: UserCreate, db_session: AsyncSession) -> User
             detail="Username already registered"
         )
 
-async def authenticate_user(credentials: OAuth2PasswordRequestForm, db_session: AsyncSession) -> User | None:
-    stmt = select(User).where(User.username == credentials.username)
+async def authenticate_user(username: str, password: str, db_session: AsyncSession) -> User | None:
+    stmt = select(User).where(User.username == username)
     result = await db_session.execute(stmt)
     user = result.scalars().first()
     
-    if user and await verify_password(credentials.password, user.password_hash):
+    if user and await verify_password(password, user.password_hash):
         return user
     return None
