@@ -11,12 +11,16 @@ if TYPE_CHECKING:
 class Account(Base):
     __tablename__ = "accounts"
 
-    id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
-    balance: Mapped[Decimal] = mapped_column(Numeric(10, 2), default=0.00)
-    user_id: Mapped[int] = mapped_column(ForeignKey("users.id"))
+    user_id: Mapped[int] = mapped_column(ForeignKey("users.id"), primary_key=True)
+    sequence_number: Mapped[int] = mapped_column(primary_key=True)
+
+    balance: Mapped[Decimal] = mapped_column(Numeric(10, 2), default=Decimal("0.00"))
 
     owner: Mapped["User"] = relationship("User", back_populates="accounts")
-    transactions: Mapped[list["Transaction"]] = relationship("Transaction", back_populates="account")
+    transactions: Mapped[list["Transaction"]] = relationship(
+        "Transaction", 
+        back_populates="account"
+    )
 
     @property
     def owner_username(self) -> str:
