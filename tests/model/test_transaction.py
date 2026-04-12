@@ -1,9 +1,9 @@
 import pytest
 from sqlalchemy.ext.asyncio import AsyncSession
-from app.model.user import User
-from app.model.account import Account
-from app.model.transaction import Transaction
-from app.model.transaction import TransactionType
+from app.models.user import User
+from app.models.account import Account
+from app.models.transaction import Transaction
+from app.models.transaction import TransactionType
 
 @pytest.mark.asyncio
 async def test_create_transaction_timestamp(db_session: AsyncSession):

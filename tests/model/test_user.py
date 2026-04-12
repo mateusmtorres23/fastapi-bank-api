@@ -1,7 +1,7 @@
 import pytest
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.ext.asyncio import AsyncSession
-from app.model.user import User
+from app.models.user import User
 from app.db.database import get_db
 from app.main import app
 

@@ -1,7 +1,7 @@
 import pytest
 from sqlalchemy.ext.asyncio import AsyncSession
-from app.model.user import User
-from app.model.account import Account
+from app.models.user import User
+from app.models.account import Account
 @pytest.mark.asyncio
 async def test_create_account_and_relationship(db_session: AsyncSession):
     owner = User(username="owner", password_hash="owner_pw")
