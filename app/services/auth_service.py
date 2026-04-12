@@ -1,5 +1,4 @@
 from fastapi import HTTPException, status
-from fastapi.security import OAuth2PasswordRequestForm
 from starlette.concurrency import run_in_threadpool
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
